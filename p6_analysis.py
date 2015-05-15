@@ -1,6 +1,6 @@
 from p6_game import Simulator
 
-global ANALYSIS     # A dictionary mapping states to the previous states that lead to them (I think!)
+#global ANALYSIS     # A dictionary mapping states to the previous states that lead to them (I think!)
 
 def _get_neighbors(sim, state):
     for move in sim.get_moves():
@@ -14,8 +14,8 @@ def analyze(design):
     init = sim.get_initial_state()
     frontier = []
     frontier.append(init)
+    global ANALYSIS 
     ANALYSIS = {}    # Reset the ANALYSIS dictionary to scrub out old data.
-    ANALYSIS[init] = None
 
     while len(frontier) > 0:
         current = frontier.pop(0)
@@ -40,4 +40,4 @@ def analyze(design):
 def inspect((i,j), draw_line):
   dst = (i,j)
   src = (1,1)
-  draw_line(src,dst)
+  draw_line(src,dst)  
