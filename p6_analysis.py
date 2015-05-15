@@ -7,6 +7,12 @@ def _get_neighbors(sim, state):
         new_state = sim.get_next_state(state, move)
         if new_state:
             yield new_state
+            
+def _records_for_point(anal_dict, point):
+    for record in anal_dict:
+        some_point, _ = record
+        if point == some_point:
+            yield record
 
 def analyze(design):
     sim = Simulator(design)
@@ -15,7 +21,7 @@ def analyze(design):
     frontier = []
     frontier.append(init)
     global ANALYSIS 
-    ANALYSIS = {}    # Reset the ANALYSIS dictionary to scrub out old data.
+    ANALYSIS = {init: (None, None)}    # Reset the ANALYSIS dictionary to scrub out old data.
 
     while len(frontier) > 0:
         current = frontier.pop(0)
@@ -38,6 +44,17 @@ def analyze(design):
         print "Special 5 is NON reachable!"
 
 def inspect((i,j), draw_line):
-  dst = (i,j)
-  src = (1,1)
-  draw_line(src,dst)  
+    src = (1,1)
+    path_head_set = _records_for_point(ANALYSIS, (i,j))
+    
+    for path_head in path_head_set:
+        _, hashing_obj = path_head
+        while path_head is not (None, None):
+            location, _ = path_head
+            path_head = ANALYSIS.get(path_head, (None, None))
+            next, _ = path_head
+            try:
+                draw_line(next, location, hashing_obj, hashing_obj)
+            except TypeError:
+                break
+        
