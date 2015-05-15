@@ -38,4 +38,6 @@ def analyze(design):
         print "Special 5 is NON reachable!"
 
 def inspect((i,j), draw_line):
-    pass
+  dst = (i,j)
+  src = (1,1)
+  draw_line(src,dst)
